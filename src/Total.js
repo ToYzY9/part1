@@ -1,4 +1,6 @@
 const Total = (props) => {
+    console.log(props);
+
     return (
         <div>
             <p>
