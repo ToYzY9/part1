@@ -4,7 +4,7 @@ const Button = (props) => {
     return <button onClick={props.handleClick}>{props.text}</button>;
 };
 
-const Paragraph = ({ text, count }) => {
+const StatisticLine = ({ text, count }) => {
     if (count === 0) return <p>{text}</p>;
     if (text === "Positive") {
         return (
@@ -20,8 +20,30 @@ const Paragraph = ({ text, count }) => {
     );
 };
 
+const Statistics = ({ good, neutral, bad, all }) => {
+    const average = () => {
+        if (all === 0) return 0;
+        return (good - bad) / all;
+    };
+
+    const positive = () => {
+        if (all === 0) return 0;
+        return (good * 100) / all;
+    };
+
+    return (
+        <div>
+            <StatisticLine text="Good" count={good} />
+            <StatisticLine text="Neutral" count={neutral} />
+            <StatisticLine text="Bad" count={bad} />
+            <StatisticLine text="All" count={all} />
+            <StatisticLine text="Average" count={average()} />
+            <StatisticLine text="Positive" count={positive()} />
+        </div>
+    );
+};
+
 function App() {
-    // enregistrer les clics de chaque bouton dans un état différent
     const [good, setGood] = useState(0);
     const [neutral, setNeutral] = useState(0);
     const [bad, setBad] = useState(0);
@@ -40,30 +62,14 @@ function App() {
         setAll(all + 1);
     };
 
-    const average = () => {
-        if (all === 0) return 0;
-        return (good - bad) / all;
-    };
-
-    const positive = () => {
-        if (all === 0) return 0;
-        return (good * 100) / all;
-    };
-
     return (
         <div>
             <h1>Give feedback</h1>
             <Button handleClick={() => handleAddGoodByOne()} text="Good" />
             <Button handleClick={handleAddNeutralByOne()} text="Neutral" />
             <Button handleClick={handleAddBadByOne} text="Bad" />
-
             <h2>Statistics</h2>
-            <Paragraph text="Good" count={good} />
-            <Paragraph text="Neutral" count={neutral} />
-            <Paragraph text="Bad" count={bad} />
-            <Paragraph text="All" count={all} />
-            <Paragraph text="Average" count={average()} />
-            <Paragraph text="Positive" count={positive()} />
+            <Statistics good={good} neutral={neutral} bad={bad} all={all} />
         </div>
     );
 }
