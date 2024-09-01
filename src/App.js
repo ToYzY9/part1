@@ -5,8 +5,13 @@ const Button = (props) => {
 };
 
 const Paragraph = ({ text, count }) => {
-    if (count === 0) {
-        return <p>{text}</p>;
+    if (count === 0) return <p>{text}</p>;
+    if (text === "Positive") {
+        return (
+            <p>
+                {text} {count} %
+            </p>
+        );
     }
     return (
         <p>
@@ -20,16 +25,31 @@ function App() {
     const [good, setGood] = useState(0);
     const [neutral, setNeutral] = useState(0);
     const [bad, setBad] = useState(0);
+    const [all, setAll] = useState(0);
 
     const handleAddGoodByOne = () => {
         setGood(good + 1);
+        setAll(all + 1);
     };
     const handleAddNeutralByOne = () => () => {
         setNeutral(neutral + 1);
+        setAll(all + 1);
     };
     const handleAddBadByOne = () => {
         setBad(bad + 1);
+        setAll(all + 1);
     };
+
+    const average = () => {
+        if (all === 0) return 0;
+        return (good - bad) / all;
+    };
+
+    const positive = () => {
+        if (all === 0) return 0;
+        return (good * 100) / all;
+    };
+
     return (
         <div>
             <h1>Give feedback</h1>
@@ -41,6 +61,9 @@ function App() {
             <Paragraph text="Good" count={good} />
             <Paragraph text="Neutral" count={neutral} />
             <Paragraph text="Bad" count={bad} />
+            <Paragraph text="All" count={all} />
+            <Paragraph text="Average" count={average()} />
+            <Paragraph text="Positive" count={positive()} />
         </div>
     );
 }
