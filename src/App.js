@@ -62,6 +62,19 @@ function App() {
         setAll(all + 1);
     };
 
+    if (all === 0) {
+        return (
+            <div>
+                <h1>Give feedback</h1>
+                <Button handleClick={() => handleAddGoodByOne()} text="Good" />
+                <Button handleClick={handleAddNeutralByOne()} text="Neutral" />
+                <Button handleClick={handleAddBadByOne} text="Bad" />
+                <h2>Statistics</h2>
+                <p>No feedback given</p>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h1>Give feedback</h1>
