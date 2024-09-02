@@ -11,18 +11,43 @@ const App = () => {
         "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.",
     ];
 
+    const anecdotesVotes = Array.from({ length: anecdotes.length }, () => ({
+        name: "",
+        votes: 0,
+    }));
+
+    anecdotes.forEach((anecdote, index) => {
+        anecdotesVotes[index].name = anecdote;
+    });
+
     const [selected, setSelected] = useState(0);
+    const [votes, setVotes] = useState(anecdotesVotes);
 
     const getRandomInt = (max) => {
         return Math.floor(Math.random() * max);
     };
 
-    const randomNumberBetweenZeroToFive = () => setSelected(getRandomInt(7));
+    const randomNumberBetweenZeroToLength = () =>
+        setSelected(getRandomInt(anecdotesVotes.length));
+
+    const handleVoteClick = (pos) => () => {
+        const newAnecdotesVotes = [...votes];
+        newAnecdotesVotes.forEach((anecdote, index) => {
+            if (pos === index) {
+                newAnecdotesVotes[index].votes += 1;
+            }
+        });
+        setVotes(newAnecdotesVotes);
+    };
 
     return (
         <div>
-            <div>{anecdotes[selected]}</div>
-            <button onClick={randomNumberBetweenZeroToFive}>
+            <div>
+                {votes[selected].name} <br />
+                has {votes[selected].votes} votes
+            </div>
+            <button onClick={handleVoteClick(selected)}>vote</button>
+            <button onClick={randomNumberBetweenZeroToLength}>
                 next anecdote
             </button>
         </div>
