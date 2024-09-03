@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Button from "./Button";
+import Title from "./Title";
+import Anecdote from "./Anecdote";
 
 const App = () => {
     const anecdotes = [
@@ -40,16 +43,32 @@ const App = () => {
         setVotes(newAnecdotesVotes);
     };
 
+    const anecdoteWithMostVotes = votes.reduce((prev, current) => {
+        return prev.votes > current.votes ? prev : current;
+    });
+
     return (
         <div>
-            <div>
-                {votes[selected].name} <br />
-                has {votes[selected].votes} votes
-            </div>
-            <button onClick={handleVoteClick(selected)}>vote</button>
-            <button onClick={randomNumberBetweenZeroToLength}>
-                next anecdote
-            </button>
+            <Title text="Anecdote of the day" />
+            <Anecdote votes={votes} selected={selected} />
+            <Button handleClick={handleVoteClick(selected)} text="vote" />
+            <Button
+                handleClick={randomNumberBetweenZeroToLength}
+                text="next anecdote"
+            />
+            {votes.map((anecdote, index) => {
+                const isAnecdoteWithMostWins =
+                    anecdoteWithMostVotes.name === anecdote.name;
+                if (isAnecdoteWithMostWins) {
+                    return (
+                        <div key={index}>
+                            <Title text="Anecdote with most votes" />
+                            <Anecdote votes={votes} selected={index} />
+                        </div>
+                    );
+                }
+                return null;
+            })}
         </div>
     );
 };
